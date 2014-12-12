@@ -1,13 +1,16 @@
 ---
 title: "Reproducible Research: Peer Assessment 1"
 output: 
-  html_document:
-    keep_md: true
+html_document: 
+keep_md: true
 ---
 
 
 ## Loading and preprocessing the data
-# open.csv()
+inputData <- read.csv("activity.csv")
+inputData$interval <- as.factor(inputData$interval)
+inputData$date <- as.Date(inputData$date, format="%Y-%m-%d")
+
 
 
 ## What is mean total number of steps taken per day?
