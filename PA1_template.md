@@ -9,7 +9,7 @@ keep_md: true
   
 ### Loading and preprocessing the data
 Assume the data have been downloaded and unzipped into the current working directory.  
-The dataset source was from the web:
+The dataset was sourced from the web:
 [Data Set](https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip)  
 The dataset was downloaded on 8 December 2014.  
 
@@ -47,18 +47,10 @@ theMedian <- round(median(dailySteps$steps, na.rm=TRUE))
 ```
 The mean number of steps taken per day is:
 
-```r
-theMean
-```
-
 ```
 ## [1] 10766
 ```
 The median number of steps taken per day is:
-
-```r
-theMedian
-```
 
 ```
 ## [1] 10765
@@ -92,8 +84,17 @@ mostStepsTime
 
   
 ### Imputing missing values
-There are a number of ways to adjust for missing values (NA).
+There are 2304 missing values among the 17568 observations:
 
+```r
+sum(is.na(inputData$steps))
+```
+
+```
+## [1] 2304
+```
+  
+There are a number of ways to adjust for missing values (NA). One easy and not obviously silly approach is to replace the NAs with the mean value for that interval across days where numbers are reported.
   
 ### Are there differences in activity patterns between weekdays and weekends?
 TBD
