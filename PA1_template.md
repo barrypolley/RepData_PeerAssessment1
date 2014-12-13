@@ -5,12 +5,11 @@ output:
 html_document: 
 keep_md: true
 ---
-
   
 ### Loading and preprocessing the data
 Assume the data have been downloaded and unzipped into the current working directory.  
-The dataset was sourced from the web:
-[Data Set](https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip)  
+The dataset was sourced from the web here:
+[Data set used in this analysis](https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip)  
 The dataset was downloaded on 8 December 2014.  
 
 ```r
@@ -29,10 +28,8 @@ head(inputData)
 ## 5    NA 2012-10-01       20
 ## 6    NA 2012-10-01       25
 ```
-
   
 ### What is mean total number of steps taken per day?
-
 
 ```r
 dailySteps <- aggregate(steps ~ date, sum, data=inputData, na.rm=TRUE)
@@ -57,7 +54,7 @@ The median number of steps taken per day is:
 ```
   
 ### What is the average daily activity pattern?
-Plot code and plot:
+Plot code and plot of average daily activity pattern:
 
 ```r
 intervalSteps <- aggregate(steps ~ interval, mean, data=inputData, na.rm=TRUE)
@@ -80,8 +77,6 @@ mostStepsTime
 ## [1] 835
 ## 288 Levels: 0 5 10 15 20 25 30 35 40 45 50 55 100 105 110 115 120 ... 2355
 ```
-
-
   
 ### Imputing missing values
 There are 2304 missing values among the 17568 observations:
@@ -94,7 +89,43 @@ sum(is.na(inputData$steps))
 ## [1] 2304
 ```
   
-There are a number of ways to adjust for missing values (NA). One easy and not obviously silly approach is to replace the NAs with the mean value for that interval across days where numbers are reported.
+There are a number of ways to adjust for missing values (NA). Substituting zeroes for all NA is the easiest approach, but unlikely to be a good choice; zero already is a common value in the data set, because people are asleep a good part of the day every day. There's no obvious basis for picking any other single number to substitute for NA. One not obviously silly approach is to replace the NAs in an interval with the mean value for that same interval across days. This does assume a consistent pattern across days of the week, though, which we haven't yet established as a good assumption.
+  
+
+```r
+sum(is.na(inputData$steps))
+```
+
+```
+## [1] 2304
+```
+  
+CODE + HIST + MEAN + MEDIAN
+  
+The mean number of steps taken per day (after adjusting all NA) is now:
+
+```
+## [1] 10766
+```
+The median number of steps taken per day (after adjusting all NA) is now:
+
+```
+## [1] 10765
+```
+  
+COMPARE
   
 ### Are there differences in activity patterns between weekdays and weekends?
-TBD
+I used the approach supplied by fellow student Renaud Dufur, in December 2014 class discussion thread #37, to create a new column labelling all observations as either weekday or weekend.
+  
+
+```r
+sum(is.na(inputData$steps))
+```
+
+```
+## [1] 2304
+```
+  
+TWO PLOTS
+  

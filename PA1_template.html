@@ -59,7 +59,7 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 
 <div id="loading-and-preprocessing-the-data" class="section level3">
 <h3>Loading and preprocessing the data</h3>
-<p>Assume the data have been downloaded and unzipped into the current working directory.<br />The dataset was sourced from the web: <a href="https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip">Data Set</a><br />The dataset was downloaded on 8 December 2014.</p>
+<p>Assume the data have been downloaded and unzipped into the current working directory.<br />The dataset was sourced from the web here: <a href="https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip">Data set used in this analysis</a><br />The dataset was downloaded on 8 December 2014.</p>
 <pre class="r"><code>inputData &lt;- read.csv(&quot;activity.csv&quot;)
 inputData$interval &lt;- as.factor(inputData$interval)
 inputData$date &lt;- as.Date(inputData$date, format=&quot;%Y-%m-%d&quot;)
@@ -86,7 +86,7 @@ theMedian &lt;- round(median(dailySteps$steps, na.rm=TRUE))</code></pre>
 </div>
 <div id="what-is-the-average-daily-activity-pattern" class="section level3">
 <h3>What is the average daily activity pattern?</h3>
-<p>Plot code and plot:</p>
+<p>Plot code and plot of average daily activity pattern:</p>
 <pre class="r"><code>intervalSteps &lt;- aggregate(steps ~ interval, mean, data=inputData, na.rm=TRUE)
 par(pch=21, col=&quot;black&quot;)
 plot(intervalSteps$interval, intervalSteps$steps, xlab = &quot;Interval (time)&quot;, ylab = &quot;Number of steps&quot;, main = &quot;Average number of steps by interval&quot;, type = &quot;n&quot;)
@@ -104,11 +104,22 @@ mostStepsTime</code></pre>
 <p>There are 2304 missing values among the 17568 observations:</p>
 <pre class="r"><code>sum(is.na(inputData$steps))</code></pre>
 <pre><code>## [1] 2304</code></pre>
-<p>There are a number of ways to adjust for missing values (NA). One easy and not obviously silly approach is to replace the NAs in an interval with the mean value for that interval across days where numbers are reported.</p>
+<p>There are a number of ways to adjust for missing values (NA). Substituting zeroes for all NA is the easiest approach, but unlikely to be a good choice; zero already is a common value in the data set, because people are asleep a good part of the day every day. There’s no obvious basis for picking any other single number to substitute for NA. One not obviously silly approach is to replace the NAs in an interval with the mean value for that same interval across days. This does assume a consistent pattern across days of the week, though, which we haven’t yet established as a good assumption.</p>
+<pre class="r"><code>sum(is.na(inputData$steps))</code></pre>
+<pre><code>## [1] 2304</code></pre>
+<p>CODE + HIST + MEAN + MEDIAN</p>
+<p>The mean number of steps taken per day (after adjusting all NA) is now:</p>
+<pre><code>## [1] 10766</code></pre>
+<p>The median number of steps taken per day (after adjusting all NA) is now:</p>
+<pre><code>## [1] 10765</code></pre>
+<p>COMPARE</p>
 </div>
 <div id="are-there-differences-in-activity-patterns-between-weekdays-and-weekends" class="section level3">
 <h3>Are there differences in activity patterns between weekdays and weekends?</h3>
-<p>TBD</p>
+<p>I used the approach supplied by fellow student Renaud Dufur, in December 2014 class discussion thread #37, to create a new column labelling all observations as either weekday or weekend.</p>
+<pre class="r"><code>sum(is.na(inputData$steps))</code></pre>
+<pre><code>## [1] 2304</code></pre>
+<p>TWO PLOTS</p>
 </div>
 
 
