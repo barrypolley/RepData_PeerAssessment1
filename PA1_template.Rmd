@@ -14,7 +14,12 @@ inputData$date <- as.Date(inputData$date, format="%Y-%m-%d")
 
 
 ## What is mean total number of steps taken per day?
+dailySteps <- aggregate(steps ~ date, sum, data=inputData, na.rm=TRUE)
 
+hist(dailySteps$steps, breaks = 12, xlab = "Total # of steps", ylab = "Frequency (# of days)", main = "Frequency - total numbers of steps per day")
+
+theMean <- round(mean(dailyTotals$steps, na.rm=TRUE))
+theMedian <- round(median(dailyTotals$steps, na.rm=TRUE))
 
 
 ## What is the average daily activity pattern?
