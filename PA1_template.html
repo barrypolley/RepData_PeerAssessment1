@@ -57,18 +57,15 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 
 <div id="loading-and-preprocessing-the-data" class="section level2">
 <h2>Loading and preprocessing the data</h2>
-<p>Assume the data have been downloaded into the current working directory. The dataset source was: <a href="https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip">https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip</a> The dataset was downloaded on 8 December 2014. inputData &lt;- read.csv(“activity.csv”) inputData<span class="math">\(interval &lt;- as.factor(inputData\)</span>interval) inputData<span class="math">\(date &lt;- as.Date(inputData\)</span>date, format=“%Y-%m-%d”)</p>
+<p>Assume the data have been downloaded into the current working directory.<br />The dataset source was: <a href="https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip">https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip</a><br />The dataset was downloaded on 8 December 2014.<br />‘’’{r, echo=TRUE} inputData &lt;- read.csv(“activity.csv”) inputData<span class="math">\(interval &lt;- as.factor(inputData\)</span>interval) inputData<span class="math">\(date &lt;- as.Date(inputData\)</span>date, format=“%Y-%m-%d”) head(inputData) ‘’’</p>
 </div>
 <div id="what-is-mean-total-number-of-steps-taken-per-day" class="section level2">
 <h2>What is mean total number of steps taken per day?</h2>
-<p>dailySteps &lt;- aggregate(steps ~ date, sum, data=inputData, na.rm=TRUE)</p>
-<p>hist(dailySteps$steps, breaks = 12, xlab = “Daily # of steps”, ylab = “Frequency (# of days)”, main = “Frequency - numbers of steps per day”)</p>
-<p>theMean &lt;- round(mean(dailyTotals<span class="math">\(steps, na.rm=TRUE)) theMedian &lt;- round(median(dailyTotals\)</span>steps, na.rm=TRUE))</p>
+<p>‘’’{r, echo=TRUE} dailySteps &lt;- aggregate(steps ~ date, sum, data=inputData, na.rm=TRUE) hist(dailySteps<span class="math">\(steps, breaks = 12, xlab = &quot;Daily # of steps&quot;, ylab = &quot;Frequency (# of days)&quot;, main = &quot;Frequency - numbers of steps per day&quot;) theMean &lt;- round(mean(dailyTotals\)</span>steps, na.rm=TRUE)) theMedian &lt;- round(median(dailyTotals$steps, na.rm=TRUE)) ‘’’</p>
 </div>
 <div id="what-is-the-average-daily-activity-pattern" class="section level2">
 <h2>What is the average daily activity pattern?</h2>
-<p>intervalSteps &lt;- aggregate(steps ~ interval, mean, data=inputData, na.rm=TRUE)</p>
-<p>par(pch=21, col=“black”) plot(intervalSteps<span class="math">\(interval, intervalSteps\)</span>steps, xlab = “Interval (time)”, ylab = “Number of steps”, main = “Average number of steps by interval”, type = “n”) lines(intervalSteps<span class="math">\(interval, intervalSteps\)</span>steps, type = “l”)</p>
+<p>Plot: ‘’’{r, echo=TRUE} intervalSteps &lt;- aggregate(steps ~ interval, mean, data=inputData, na.rm=TRUE) par(pch=21, col=“black”) plot(intervalSteps<span class="math">\(interval, intervalSteps\)</span>steps, xlab = “Interval (time)”, ylab = “Number of steps”, main = “Average number of steps by interval”, type = “n”) lines(intervalSteps<span class="math">\(interval, intervalSteps\)</span>steps, type = “l”) ‘’’ Time for max steps: ‘’’{r, echo=TRUE} mostSteps &lt;- subset(intervalSteps, steps==max(steps)) mostStepsTime &lt;- mostSteps[1]$interval ‘’’</p>
 </div>
 <div id="imputing-missing-values" class="section level2">
 <h2>Imputing missing values</h2>
