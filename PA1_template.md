@@ -1,5 +1,5 @@
 ---
-title: "Reproducible Research: Peer Assessment 1"
+title: "Reproducible Research Peer Assessment 1"
 author: Bazza
 output: 
 html_document: 
@@ -7,10 +7,10 @@ keep_md: true
 ---
 
   
-## Loading and preprocessing the data
-Assume the data have been downloaded into the current working directory.  
-The dataset source was:
-[link](https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip)  
+### Loading and preprocessing the data
+Assume the data have been downloaded and unzipped into the current working directory.  
+The dataset source was from the web:
+[Data Set](https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip)  
 The dataset was downloaded on 8 December 2014.  
 
 ```r
@@ -31,7 +31,7 @@ head(inputData)
 ```
 
   
-## What is mean total number of steps taken per day?
+### What is mean total number of steps taken per day?
 
 
 ```r
@@ -64,8 +64,8 @@ theMedian
 ## [1] 10765
 ```
   
-## What is the average daily activity pattern?
-Plot:
+### What is the average daily activity pattern?
+Plot code and plot:
 
 ```r
 intervalSteps <- aggregate(steps ~ interval, mean, data=inputData, na.rm=TRUE)
@@ -75,18 +75,25 @@ lines(intervalSteps$interval, intervalSteps$steps, type = "l")
 ```
 
 ![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png) 
-Time for max steps:
+   
+The highest number of steps occurs during interval 835:
 
 ```r
 mostSteps <- subset(intervalSteps, steps==max(steps))
 mostStepsTime <- mostSteps[1]$interval
+mostStepsTime
+```
+
+```
+## [1] 835
+## 288 Levels: 0 5 10 15 20 25 30 35 40 45 50 55 100 105 110 115 120 ... 2355
 ```
 
 
   
-## Imputing missing values
-
+### Imputing missing values
+There are a number of ways to adjust for missing values (NA).
 
   
-## Are there differences in activity patterns between weekdays and weekends?
-
+### Are there differences in activity patterns between weekdays and weekends?
+TBD
