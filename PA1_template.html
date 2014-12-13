@@ -57,16 +57,18 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 
 <div id="loading-and-preprocessing-the-data" class="section level2">
 <h2>Loading and preprocessing the data</h2>
-<p>inputData &lt;- read.csv(“activity.csv”) inputData<span class="math">\(interval &lt;- as.factor(inputData\)</span>interval) inputData<span class="math">\(date &lt;- as.Date(inputData\)</span>date, format=“%Y-%m-%d”)</p>
+<p>Assume the data have been downloaded into the current working directory. The dataset source was: <a href="https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip">https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip</a> The dataset was downloaded on 8 December 2014. inputData &lt;- read.csv(“activity.csv”) inputData<span class="math">\(interval &lt;- as.factor(inputData\)</span>interval) inputData<span class="math">\(date &lt;- as.Date(inputData\)</span>date, format=“%Y-%m-%d”)</p>
 </div>
 <div id="what-is-mean-total-number-of-steps-taken-per-day" class="section level2">
 <h2>What is mean total number of steps taken per day?</h2>
 <p>dailySteps &lt;- aggregate(steps ~ date, sum, data=inputData, na.rm=TRUE)</p>
-<p>hist(dailySteps$steps, breaks = 12, xlab = “Total # of steps”, ylab = “Frequency (# of days)”, main = “Frequency - total numbers of steps per day”)</p>
+<p>hist(dailySteps$steps, breaks = 12, xlab = “Daily # of steps”, ylab = “Frequency (# of days)”, main = “Frequency - numbers of steps per day”)</p>
 <p>theMean &lt;- round(mean(dailyTotals<span class="math">\(steps, na.rm=TRUE)) theMedian &lt;- round(median(dailyTotals\)</span>steps, na.rm=TRUE))</p>
 </div>
 <div id="what-is-the-average-daily-activity-pattern" class="section level2">
 <h2>What is the average daily activity pattern?</h2>
+<p>intervalSteps &lt;- aggregate(steps ~ interval, sum, data=inputData, na.rm=TRUE)</p>
+<p>par(pch=21, col=“black”) plot(intervalSteps<span class="math">\(interval, intervalSteps\)</span>steps, xlab = “xxx”, ylab = “yyy”, main = “main”, type = “n”) lines(intervalSteps<span class="math">\(interval, intervalSteps\)</span>steps, type = “l”)</p>
 </div>
 <div id="imputing-missing-values" class="section level2">
 <h2>Imputing missing values</h2>
