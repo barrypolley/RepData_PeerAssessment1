@@ -27,11 +27,12 @@ theMedian <- round(median(dailyTotals$steps, na.rm=TRUE))
 
 
 ## What is the average daily activity pattern?
-intervalSteps <- aggregate(steps ~ interval, sum, data=inputData, na.rm=TRUE)
+intervalSteps <- aggregate(steps ~ interval, mean, data=inputData, na.rm=TRUE)
 
 par(pch=21, col="black")
-plot(intervalSteps$interval, intervalSteps$steps, xlab = "xxx", ylab = "yyy", main = "main", type = "n")
+plot(intervalSteps$interval, intervalSteps$steps, xlab = "Interval (time)", ylab = "Number of steps", main = "Average number of steps by interval", type = "n")
 lines(intervalSteps$interval, intervalSteps$steps, type = "l")
+
 
 
 

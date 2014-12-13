@@ -67,8 +67,8 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 </div>
 <div id="what-is-the-average-daily-activity-pattern" class="section level2">
 <h2>What is the average daily activity pattern?</h2>
-<p>intervalSteps &lt;- aggregate(steps ~ interval, sum, data=inputData, na.rm=TRUE)</p>
-<p>par(pch=21, col=“black”) plot(intervalSteps<span class="math">\(interval, intervalSteps\)</span>steps, xlab = “xxx”, ylab = “yyy”, main = “main”, type = “n”) lines(intervalSteps<span class="math">\(interval, intervalSteps\)</span>steps, type = “l”)</p>
+<p>intervalSteps &lt;- aggregate(steps ~ interval, mean, data=inputData, na.rm=TRUE)</p>
+<p>par(pch=21, col=“black”) plot(intervalSteps<span class="math">\(interval, intervalSteps\)</span>steps, xlab = “Interval (time)”, ylab = “Number of steps”, main = “Average number of steps by interval”, type = “n”) lines(intervalSteps<span class="math">\(interval, intervalSteps\)</span>steps, type = “l”)</p>
 </div>
 <div id="imputing-missing-values" class="section level2">
 <h2>Imputing missing values</h2>
