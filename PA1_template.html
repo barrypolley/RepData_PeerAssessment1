@@ -105,21 +105,28 @@ mostStepsTime</code></pre>
 <pre class="r"><code>sum(is.na(inputData$steps))</code></pre>
 <pre><code>## [1] 2304</code></pre>
 <p>There are a number of ways to adjust for missing values (NA). Substituting zeroes for all NA is the easiest approach, but unlikely to be a good choice; zero already is a common value in the data set, because people are asleep a good part of the day every day. There’s no obvious basis for picking any other single number to substitute for NA. One not obviously silly approach is to replace the NAs in an interval with the mean value for that same interval across days. This does assume a consistent pattern across days of the week, though, which we haven’t yet established as a good assumption.</p>
-<pre class="r"><code>sum(is.na(inputData$steps))</code></pre>
-<pre><code>## [1] 2304</code></pre>
-<p>CODE + HIST + MEAN + MEDIAN</p>
+<pre class="r"><code># add column of imaginary data
+adjustedData &lt;- inputData
+imputeMean &lt;- function(x) replace(x, is.na(x), mean(x, na.rm = TRUE)) # stackoverflow 17297897
+newCol &lt;- imputeMean(adjustedData$steps)
+adjustedData[&quot;imputedSteps&quot;] &lt;- newCol
+
+#identical to earlier process, with imaginary data
+dailyAdjustedSteps &lt;- aggregate(imputedSteps ~ date, sum, data=adjustedData, na.rm=TRUE)
+theAdjustedMean &lt;- round(mean(dailyAdjustedSteps$imputedSteps, na.rm=TRUE))
+theAdjustedMedian &lt;- round(median(dailyAdjustedSteps$imputedSteps, na.rm=TRUE))</code></pre>
+<p>HISTOGRAM HERE</p>
 <p>The mean number of steps taken per day (after adjusting all NA) is now:</p>
 <pre><code>## [1] 10766</code></pre>
 <p>The median number of steps taken per day (after adjusting all NA) is now:</p>
-<pre><code>## [1] 10765</code></pre>
-<p>COMPARE</p>
+<pre><code>## [1] 10766</code></pre>
+<p>The difference between these numbers and the prior calculations is negligible.</p>
 </div>
 <div id="are-there-differences-in-activity-patterns-between-weekdays-and-weekends" class="section level3">
 <h3>Are there differences in activity patterns between weekdays and weekends?</h3>
 <p>I used the approach supplied by fellow student Renaud Dufur, in December 2014 class discussion thread #37, to create a new column labelling all observations as either weekday or weekend.</p>
-<pre class="r"><code>sum(is.na(inputData$steps))</code></pre>
-<pre><code>## [1] 2304</code></pre>
-<p>TWO PLOTS</p>
+<pre class="r"><code>#CALCULATIONS HERE</code></pre>
+<p>TWO PLOTS HERE</p>
 </div>
 
 

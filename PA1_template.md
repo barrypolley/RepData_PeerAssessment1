@@ -93,14 +93,19 @@ There are a number of ways to adjust for missing values (NA). Substituting zeroe
   
 
 ```r
-sum(is.na(inputData$steps))
-```
+# add column of imaginary data
+adjustedData <- inputData
+imputeMean <- function(x) replace(x, is.na(x), mean(x, na.rm = TRUE)) # stackoverflow 17297897
+newCol <- imputeMean(adjustedData$steps)
+adjustedData["imputedSteps"] <- newCol
 
-```
-## [1] 2304
+#identical to earlier process, with imaginary data
+dailyAdjustedSteps <- aggregate(imputedSteps ~ date, sum, data=adjustedData, na.rm=TRUE)
+theAdjustedMean <- round(mean(dailyAdjustedSteps$imputedSteps, na.rm=TRUE))
+theAdjustedMedian <- round(median(dailyAdjustedSteps$imputedSteps, na.rm=TRUE))
 ```
   
-CODE + HIST + MEAN + MEDIAN
+HISTOGRAM HERE
   
 The mean number of steps taken per day (after adjusting all NA) is now:
 
@@ -110,22 +115,18 @@ The mean number of steps taken per day (after adjusting all NA) is now:
 The median number of steps taken per day (after adjusting all NA) is now:
 
 ```
-## [1] 10765
+## [1] 10766
 ```
   
-COMPARE
+The difference between these numbers and the prior calculations is negligible.
   
 ### Are there differences in activity patterns between weekdays and weekends?
 I used the approach supplied by fellow student Renaud Dufur, in December 2014 class discussion thread #37, to create a new column labelling all observations as either weekday or weekend.
   
 
 ```r
-sum(is.na(inputData$steps))
-```
-
-```
-## [1] 2304
+#CALCULATIONS HERE
 ```
   
-TWO PLOTS
+TWO PLOTS HERE
   

@@ -59,28 +59,37 @@ sum(is.na(inputData$steps))
 There are a number of ways to adjust for missing values (NA). Substituting zeroes for all NA is the easiest approach, but unlikely to be a good choice; zero already is a common value in the data set, because people are asleep a good part of the day every day. There's no obvious basis for picking any other single number to substitute for NA. One not obviously silly approach is to replace the NAs in an interval with the mean value for that same interval across days. This does assume a consistent pattern across days of the week, though, which we haven't yet established as a good assumption.
   
 ```{r, echo=TRUE}
-sum(is.na(inputData$steps))
+# add column of imaginary data
+adjustedData <- inputData
+imputeMean <- function(x) replace(x, is.na(x), mean(x, na.rm = TRUE)) # stackoverflow 17297897
+newCol <- imputeMean(adjustedData$steps)
+adjustedData["imputedSteps"] <- newCol
+
+#identical to earlier process, with imaginary data
+dailyAdjustedSteps <- aggregate(imputedSteps ~ date, sum, data=adjustedData, na.rm=TRUE)
+theAdjustedMean <- round(mean(dailyAdjustedSteps$imputedSteps, na.rm=TRUE))
+theAdjustedMedian <- round(median(dailyAdjustedSteps$imputedSteps, na.rm=TRUE))
 ```
   
-CODE + HIST + MEAN + MEDIAN
+HISTOGRAM HERE
   
 The mean number of steps taken per day (after adjusting all NA) is now:
 ```{r, echo=FALSE}
-theMean
+theAdjustedMean
 ```
 The median number of steps taken per day (after adjusting all NA) is now:
 ```{r, echo=FALSE}
-theMedian
+theAdjustedMedian
 ```
   
-COMPARE
+The difference between these numbers and the prior calculations is negligible.
   
 ### Are there differences in activity patterns between weekdays and weekends?
 I used the approach supplied by fellow student Renaud Dufur, in December 2014 class discussion thread #37, to create a new column labelling all observations as either weekday or weekend.
   
 ```{r, echo=TRUE}
-sum(is.na(inputData$steps))
+#CALCULATIONS HERE
 ```
   
-TWO PLOTS
+TWO PLOTS HERE
   
