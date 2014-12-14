@@ -104,9 +104,10 @@ adjustedData["imputedSteps"] <- newCol
 dailyAdjustedSteps <- aggregate(imputedSteps ~ date, sum, data=adjustedData, na.rm=TRUE)
 theAdjustedMean <- round(mean(dailyAdjustedSteps$imputedSteps, na.rm=TRUE))
 theAdjustedMedian <- round(median(dailyAdjustedSteps$imputedSteps, na.rm=TRUE))
+hist(dailyAdjustedSteps$imputedSteps, breaks = 12, xlab = "Daily # of steps", ylab = "Frequency (# of days)", main = "Frequency - numbers of steps per day")
 ```
-  
-HISTOGRAM HERE
+
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png) 
   
 The mean number of steps taken per day (after replacing all NA) is now:
 
@@ -119,7 +120,7 @@ The median number of steps taken per day (after replacing all NA) is now:
 ## [1] 10766
 ```
   
-The difference between these numbers and the prior calculations is negligible.
+The difference between these numbers and the prior calculations is negligible, as is the difference between the histograms.
   
 ### Are there differences in activity patterns between weekdays and weekends?
 I used the approach supplied by fellow student Renaud Dufour, in December 2014 class discussion thread #37, to create a new column labelling all observations as either weekday or weekend. A simple visual comparison of the activity plots shows that the answer to this question is **YES**.
