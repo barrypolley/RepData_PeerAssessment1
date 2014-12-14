@@ -7,7 +7,7 @@ keep_md: true
 ---
   
 ### Loading and preprocessing the data
-Assume the data have been downloaded and unzipped into the current working directory.  
+Code assumes the data have been downloaded and unzipped into the current working directory.  
 The dataset was sourced from the web here:
 [Data set used in this analysis](https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip)  
 The dataset was downloaded on 8 December 2014.  
@@ -57,6 +57,7 @@ The median number of steps taken per day is:
 Plot code and plot of average daily activity pattern:
 
 ```r
+#use base plotting system to draw a line chart
 intervalSteps <- aggregate(steps ~ interval, mean, data=inputData, na.rm=TRUE)
 par(pch=21, col="black")
 plot(intervalSteps$interval, intervalSteps$steps, xlab = "Interval (time)", ylab = "Number of steps", main = "Average number of steps by interval", type = "n")
@@ -89,17 +90,17 @@ sum(is.na(inputData$steps))
 ## [1] 2304
 ```
   
-There are a number of ways to adjust for missing values (NA). Substituting zeroes for all NA is the easiest approach, but unlikely to be a good choice; zero already is a common value in the data set, because people are asleep a good part of the day every day. There's no obvious basis for picking any other single number to substitute for NA. One not obviously silly approach is to replace the NAs in an interval with the mean value for that same interval across days. This does assume a consistent pattern across days of the week, though, which we haven't yet established as a good assumption.
+There are a number of ways to adjust for missing values (NA). Substituting zeroes for all NA is the easiest approach, but unlikely to be a good choice; zero already is a common value in the data set, because people are asleep a good part of the day every day. There's no obvious basis for picking any other single number to substitute for NA. One not plausible approach is to replace the NAs in all intervals with the mean values for those same intervals across days. This does assume a consistent pattern across days of the week, though, which we haven't yet established as a good assumption.
   
 
 ```r
-# add column of imaginary data
+# add column of imputed data
 adjustedData <- inputData
-imputeMean <- function(x) replace(x, is.na(x), mean(x, na.rm = TRUE)) # stackoverflow 17297897
+imputeMean <- function(x) replace(x, is.na(x), mean(x, na.rm = TRUE)) # from stackoverflow 17297897
 newCol <- imputeMean(adjustedData$steps)
 adjustedData["imputedSteps"] <- newCol
 
-#identical to earlier process, with imaginary data
+#identical to earlier process, with imputed data
 dailyAdjustedSteps <- aggregate(imputedSteps ~ date, sum, data=adjustedData, na.rm=TRUE)
 theAdjustedMean <- round(mean(dailyAdjustedSteps$imputedSteps, na.rm=TRUE))
 theAdjustedMedian <- round(median(dailyAdjustedSteps$imputedSteps, na.rm=TRUE))
@@ -107,12 +108,12 @@ theAdjustedMedian <- round(median(dailyAdjustedSteps$imputedSteps, na.rm=TRUE))
   
 HISTOGRAM HERE
   
-The mean number of steps taken per day (after adjusting all NA) is now:
+The mean number of steps taken per day (after replacing all NA) is now:
 
 ```
 ## [1] 10766
 ```
-The median number of steps taken per day (after adjusting all NA) is now:
+The median number of steps taken per day (after replacing all NA) is now:
 
 ```
 ## [1] 10766
@@ -121,12 +122,24 @@ The median number of steps taken per day (after adjusting all NA) is now:
 The difference between these numbers and the prior calculations is negligible.
   
 ### Are there differences in activity patterns between weekdays and weekends?
-I used the approach supplied by fellow student Renaud Dufur, in December 2014 class discussion thread #37, to create a new column labelling all observations as either weekday or weekend.
+I used the approach supplied by fellow student Renaud Dufour, in December 2014 class discussion thread #37, to create a new column labelling all observations as either weekday or weekend. A simple visual comparison of the activity plots shows that the answer to this question is **YES**.
   
 
 ```r
-#CALCULATIONS HERE
+# new column for day type
+library(lubridate)
+adjustedData[, "dayType"] <- as.Date(NA)
+adjustedData$dayType <- factor(ifelse(wday(adjustedData$date) %in% c(1,7), "weekend", "weekday"))
+# one DF for weekday, one for weekend, then plot next to one another using basic plotting system
+weekdaydata <- subset(adjustedData, dayType == "weekday")
+weekenddata <- subset(adjustedData, dayType == "weekend")
+#COPY/PASTE aargh
+intervalSteps <- aggregate(steps ~ interval, mean, data=inputData, na.rm=TRUE)
+par(pch=21, col="black")
+plot(intervalSteps$interval, intervalSteps$steps, xlab = "Interval (time)", ylab = "Number of steps", main = "Average number of steps by interval", type = "n")
+lines(intervalSteps$interval, intervalSteps$steps, type = "l")
 ```
+
+![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png) 
   
-TWO PLOTS HERE
-  
+######End document.
