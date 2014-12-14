@@ -102,12 +102,15 @@ adjustedData["imputedSteps"] <- newCol
 
 #identical to earlier process, with imputed data
 dailyAdjustedSteps <- aggregate(imputedSteps ~ date, sum, data=adjustedData, na.rm=TRUE)
-theAdjustedMean <- round(mean(dailyAdjustedSteps$imputedSteps, na.rm=TRUE))
-theAdjustedMedian <- round(median(dailyAdjustedSteps$imputedSteps, na.rm=TRUE))
-hist(dailyAdjustedSteps$imputedSteps, breaks = 12, xlab = "Daily # of steps", ylab = "Frequency (# of days)", main = "Frequency - numbers of steps per day")
+hist(dailyAdjustedSteps$imputedSteps, breaks = 12, xlab = "Daily # of steps", ylab = "Frequency (# of days)", main = "Frequency - adjusted numbers of steps per day")
 ```
 
 ![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png) 
+
+```r
+theAdjustedMean <- round(mean(dailyAdjustedSteps$imputedSteps, na.rm=TRUE))
+theAdjustedMedian <- round(median(dailyAdjustedSteps$imputedSteps, na.rm=TRUE))
+```
   
 The mean number of steps taken per day (after replacing all NA) is now:
 
@@ -123,21 +126,26 @@ The median number of steps taken per day (after replacing all NA) is now:
 The difference between these numbers and the prior calculations is negligible, as is the difference between the histograms.
   
 ### Are there differences in activity patterns between weekdays and weekends?
-I used the approach supplied by fellow student Renaud Dufour, in December 2014 class discussion thread #37, to create a new column labelling all observations as either weekday or weekend. A simple visual comparison of the activity plots shows that the answer to this question is **YES**.
+I used the approach supplied by fellow student Renaud Dufour, in December 2014 class discussion thread #37, to create a new column labelling all observations as either weekday or weekend. Then I plotted the weekday and weekend data separately. A simple visual comparison of the activity plots shows that the answer to this question is **YES**. Apparently this population is composed mainly of sedentary (office?) workers who sleep later and enjoy movement throughout the day on weekends.
   
+   
 
 ```r
 # new column for day type
 library(lubridate)
 adjustedData[, "dayType"] <- as.Date(NA)
 adjustedData$dayType <- factor(ifelse(wday(adjustedData$date) %in% c(1,7), "weekend", "weekday"))
-# one DF for weekday, one for weekend, then plot next to one another using basic plotting system
-weekdaydata <- subset(adjustedData, dayType == "weekday")
-weekenddata <- subset(adjustedData, dayType == "weekend")
-#COPY/PASTE aargh
-intervalSteps <- aggregate(steps ~ interval, mean, data=inputData, na.rm=TRUE)
+# one DF for weekday, another for weekend
+weekdayData <- subset(adjustedData, dayType == "weekday")
+weekendData <- subset(adjustedData, dayType == "weekend")
+#plot two line graphs using basic plotting system
+par(mfrow=c(2,1))
 par(pch=21, col="black")
-plot(intervalSteps$interval, intervalSteps$steps, xlab = "Interval (time)", ylab = "Number of steps", main = "Average number of steps by interval", type = "n")
+intervalSteps <- aggregate(steps ~ interval, mean, data=weekdayData, na.rm=TRUE)
+plot(intervalSteps$interval, intervalSteps$steps, ylim=c(0,250), xlab = "Interval (time)", ylab = "Number of steps", main = "Average number of steps (weekdays)", type = "n")
+lines(intervalSteps$interval, intervalSteps$steps, type = "l")
+intervalSteps <- aggregate(steps ~ interval, mean, data=weekendData, na.rm=TRUE)
+plot(intervalSteps$interval, intervalSteps$steps, ylim=c(0,250), xlab = "Interval (time)", ylab = "Number of steps", main = "Average number of steps (weekends)", type = "n")
 lines(intervalSteps$interval, intervalSteps$steps, type = "l")
 ```
 
